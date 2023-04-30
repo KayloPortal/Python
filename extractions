@@ -1,0 +1,55 @@
+# WORDS Functions
+class Info :
+  def __init__(self):
+    self.wordsCounted = {}
+    self.lettersCounted = {}
+
+info = "";
+def start():
+   global info
+   info = Info()
+
+def extractWords(text): # Just a callback
+    text = text.lower() + " "
+    dictWords(text)
+
+def dictWords(text, currentWord=""): # Finding Words & placing them in a dictionary
+    for letter in text:
+        if letter == " ":
+            if len(currentWord) < 2 and currentWord != "I" :
+               currentWord += "(as a word)"
+            info.wordsCounted = directAddition(info.wordsCounted, currentWord)
+            currentWord = ""
+            continue
+        elif letter.isalpha(): 
+            currentWord += letter
+
+# LETTERS Functions
+def extractLetters(text): # Extracting Letters and storing them into a dictionary
+    text = text.lower()
+    for letter in text:
+        if letter.isalpha():
+            directAddition(info.lettersCounted, letter)
+
+# 
+def directAddition(dict, key): # for counting every letter or word
+  try:
+    dict [ key ] += 1
+  except:
+    dict [ key ] = 0
+  finally: 
+    return dict
+
+#-----------------
+#-----------------
+#-----------------
+# API
+def mainExtractor(text, words=False, letters=False, both=False):
+    start()
+    if words or both:
+      extractWords(text)
+      words = info.wordsCounted
+    if letters or both:
+      extractLetters(text)
+      letters = info.lettersCounted
+    return words, letters
